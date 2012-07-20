@@ -27,6 +27,7 @@ import org.springframework.social.twitter.api.Trend;
 import org.springframework.social.twitter.api.Trends;
 import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.TwitterProfile;
+import org.springframework.social.twitter.api.User;
 import org.springframework.social.twitter.api.UserList;
 
 /**
@@ -47,6 +48,8 @@ class TwitterModule extends SimpleModule {
 		context.setMixInAnnotations(DirectMessage.class, DirectMessageMixin.class);
 		context.setMixInAnnotations(UserList.class, UserListMixin.class);
 		context.setMixInAnnotations(Tweet.class, TweetMixin.class);
+		// context.setMixInAnnotations(MyRetweet.class, MyRetweetMixin.class);
+		context.setMixInAnnotations(User.class, UserMixin.class);
 		context.setMixInAnnotations(SearchResults.class, SearchResultsMixin.class);
 		context.setMixInAnnotations(Place.class, PlaceMixin.class);
 		context.setMixInAnnotations(SimilarPlacesResponse.class, SimilarPlacesMixin.class);

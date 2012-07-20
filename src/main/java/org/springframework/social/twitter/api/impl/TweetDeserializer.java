@@ -62,10 +62,12 @@ class TweetDeserializer extends JsonDeserializer<Tweet> {
 		Long toUserId = toUserIdNode != null ? toUserIdNode.getLongValue() : null;
 		JsonNode languageCodeNode = tree.get("iso_language_code");
 		String languageCode = languageCodeNode != null ? languageCodeNode.asText() : null;
-		Tweet tweet = new Tweet(id, text, createdAt, fromScreenName, fromImageUrl, toUserId, fromId, languageCode, source);
+		Tweet tweet = null;
+		// new Tweet(id, text, createdAt, fromScreenName, fromImageUrl,
+		// toUserId, fromId, languageCode, source);
 		JsonNode inReplyToStatusIdNode = tree.get("in_reply_to_status_id");
 		Long inReplyToStatusId = inReplyToStatusIdNode != null && !inReplyToStatusIdNode.isNull() ? inReplyToStatusIdNode.getLongValue() : null;
-		tweet.setInReplyToStatusId(inReplyToStatusId);
+		// tweet.setInReplyToStatusId(inReplyToStatusId);
 		JsonNode retweetCountNode = tree.get("retweet_count");
 		Integer retweetCount = retweetCountNode != null && !retweetCountNode.isNull() ? retweetCountNode.getIntValue() : null;
 		tweet.setRetweetCount(retweetCount);

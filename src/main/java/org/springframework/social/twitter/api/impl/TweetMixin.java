@@ -15,8 +15,19 @@
  */
 package org.springframework.social.twitter.api.impl;
 
+import java.io.IOException;
+import java.util.Date;
+
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.DeserializationContext;
+import org.codehaus.jackson.map.JsonDeserializer;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.springframework.social.twitter.api.Tweet;
+import org.springframework.social.twitter.api.impl.UserMixin.CustomDateDeserializer;
 
 /**
  * Mixin class for adding Jackson annotations to Tweet. 
@@ -24,6 +35,36 @@ import org.codehaus.jackson.map.annotate.JsonDeserialize;
  * @author Craig Walls
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonDeserialize(using = TweetDeserializer.class)
-interface TweetMixin {
+// @JsonDeserialize(using = TweetDeserializer.class)
+abstract class TweetMixin {
+
+	@JsonProperty("created_at")
+	@JsonDeserialize(using = CustomDateDeserializer.class)
+	Date createdAt;
+
+	@JsonProperty("in_reply_to_status_id")
+	long inReplyToStatusId;
+
+	@JsonProperty("in_reply_to_screen_name")
+	String inReplyToScreenName;
+
+	@JsonProperty("in_reply_to_user_id")
+	String inReplyToUserId;
+
+	@JsonProperty("retweeted_status")
+	Tweet retweet;
+
+	@JsonProperty("current_user_retweet")
+	@JsonDeserialize(using = MyRetweetDes.class)
+	Long retweetId;
+
+
+	public static class MyRetweetDes extends JsonDeserializer<Long> {
+		@Override
+		public Long deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+			JsonNode tree = jp.readValueAsTree();
+			// jp.skipChildren();
+			return tree.get("id").asLong();
+		}
+	}
 }
